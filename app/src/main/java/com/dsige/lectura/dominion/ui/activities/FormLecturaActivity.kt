@@ -31,35 +31,7 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_form_corte.*
 import kotlinx.android.synthetic.main.activity_form_lectura.*
-import kotlinx.android.synthetic.main.activity_form_lectura.buttonGrabar
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextArtefacto
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextCausa
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextDialogObservacion
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextLectura
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextLectura2
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextMedidor
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextMotivo
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextObservacion
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextResultado
-import kotlinx.android.synthetic.main.activity_form_lectura.editTextUbicacion
-import kotlinx.android.synthetic.main.activity_form_lectura.imageViewMap
-import kotlinx.android.synthetic.main.activity_form_lectura.layoutLectura
-import kotlinx.android.synthetic.main.activity_form_lectura.layoutMedidor
-import kotlinx.android.synthetic.main.activity_form_lectura.layoutNroLectura
-import kotlinx.android.synthetic.main.activity_form_lectura.layoutObservacion
-import kotlinx.android.synthetic.main.activity_form_lectura.linearLayout
-import kotlinx.android.synthetic.main.activity_form_lectura.linearLayoutCorte2
-import kotlinx.android.synthetic.main.activity_form_lectura.textViewCliente
-import kotlinx.android.synthetic.main.activity_form_lectura.textViewContrato
-import kotlinx.android.synthetic.main.activity_form_lectura.textViewDireccion
-import kotlinx.android.synthetic.main.activity_form_lectura.textViewMedidor
-import kotlinx.android.synthetic.main.activity_form_lectura.textViewNota
-import kotlinx.android.synthetic.main.activity_form_lectura.textViewOrden
-import kotlinx.android.synthetic.main.activity_form_lectura.textViewTelefono
-import kotlinx.android.synthetic.main.activity_form_lectura.toolbar
-import kotlinx.android.synthetic.main.fragment_send.*
 import javax.inject.Inject
 
 class FormLecturaActivity : DaggerAppCompatActivity(), View.OnClickListener {

@@ -1,8 +1,6 @@
 package com.dsige.lectura.dominion.data.viewModel
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,12 +10,10 @@ import com.dsige.lectura.dominion.data.local.repository.AppRepository
 import com.dsige.lectura.dominion.helper.Mensaje
 import com.dsige.lectura.dominion.helper.Util
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.CompletableObserver
 import io.reactivex.Observable
 import io.reactivex.Observer
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -32,7 +28,7 @@ class SuministroViewModel @Inject
 internal constructor(private val roomRepository: AppRepository, private val retrofit: ApiError) :
     ViewModel() {
 
-    val mensajeAlert= MutableLiveData<String>()
+    val mensajeAlert = MutableLiveData<String>()
     val mensajeError = MutableLiveData<String>()
     val mensajeSuccess = MutableLiveData<String>()
     val servicios: MutableLiveData<List<Servicio>> = MutableLiveData()
@@ -46,7 +42,7 @@ internal constructor(private val roomRepository: AppRepository, private val retr
         mensajeError.value = s
     }
 
-    fun setAlert(s:String){
+    fun setAlert(s: String) {
         mensajeAlert.value = s
     }
 
@@ -221,7 +217,7 @@ internal constructor(private val roomRepository: AppRepository, private val retr
             })
     }
 
-    fun generarArchivo(
+    fun generatePhoto(
         nameImg: String,
         context: Context,
         fechaAsignacion: String,
@@ -231,9 +227,8 @@ internal constructor(private val roomRepository: AppRepository, private val retr
         receive: Int,
         tipo: Int
     ) {
-        Util.getPhotoAdjunto(
-            nameImg, context, fechaAsignacion, direccion,
-            latitud, longitud, receive, tipo
+        Util.generatePhoto(
+            nameImg, context, fechaAsignacion, direccion, latitud, longitud, receive, tipo
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -363,7 +358,7 @@ internal constructor(private val roomRepository: AppRepository, private val retr
         val register: Observable<Registro> = roomRepository.getRegistroByIdTask(id)
         register.flatMap { a ->
             val json = Gson().toJson(a)
-            Log.i("TAG", json)
+//            Log.i("TAG", json)
             val body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
             Observable.zip(
                 Observable.just(a),

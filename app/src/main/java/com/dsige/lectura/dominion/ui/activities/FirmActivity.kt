@@ -1,10 +1,10 @@
 package com.dsige.lectura.dominion.ui.activities
 
+import android.graphics.Insets
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import com.dsige.lectura.dominion.R
 import com.dsige.lectura.dominion.data.local.model.Photo
@@ -79,9 +79,20 @@ class FirmActivity : DaggerAppCompatActivity(), View.OnClickListener {
         toolbar.setNavigationOnClickListener {
             finish()
         }
-        val metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(metrics)
-        paintView.init(metrics)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowMetrics: WindowMetrics = windowManager.currentWindowMetrics
+            val insets: Insets = windowMetrics.windowInsets
+                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+            windowMetrics.bounds.width() - insets.left - insets.right
+            paintView.initNew(windowMetrics)
+        } else {
+            val metrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.getMetrics(metrics)
+            paintView.init(metrics)
+        }
+
 
 
         suministroViewModel.mensajeSuccess.observe(this) {

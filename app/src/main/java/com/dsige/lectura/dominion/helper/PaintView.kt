@@ -3,10 +3,15 @@ package com.dsige.lectura.dominion.helper
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.os.Build
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowMetrics
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import com.dsige.lectura.dominion.R
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -17,7 +22,7 @@ class PaintView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     private var mX = 0f
     private var mY = 0f
-    lateinit var mPath: Path
+    private lateinit var mPath: Path
     private val mPaint: Paint = Paint()
     private val paths = ArrayList<FingerPath>()
     private var currentColor = 0
@@ -26,7 +31,7 @@ class PaintView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     private var blur = false
     private val mEmboss: MaskFilter
     private val mBlur: MaskFilter
-    lateinit var mBitmap: Bitmap
+    private lateinit var mBitmap: Bitmap
     private var mCanvas: Canvas? = null
     private val mBitmapPaint = Paint(Paint.DITHER_FLAG)
     private var x1 = 0f
@@ -41,7 +46,17 @@ class PaintView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         strokeWidth = BRUSH_SIZE
     }
 
-    fun normal() {
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun initNew(metrics: WindowMetrics) {
+        val height = metrics.bounds.height()
+        val width = metrics.bounds.width()
+        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        mCanvas = Canvas(mBitmap)
+        currentColor = DEFAULT_COLOR
+        strokeWidth = BRUSH_SIZE
+    }
+
+    private fun normal() {
         emboss = false
         blur = false
     }
@@ -119,19 +134,58 @@ class PaintView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     fun save(context: Context, user: Int, id: Int, tipo: String): String {
         val folder = Util.getFolder(context)
-        val nameImg: String = Util.getDateFirmReconexiones(user,id, tipo)
-
+        val nameImg: String = Util.getDateFirmReconexiones(user, id, tipo)
         val image = File(folder, nameImg)
-        val direccion = "$folder/$nameImg"
+
+        val canvasPaint = Canvas(mBitmap)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.color = Color.WHITE
+        paint.setShadowLayer(1f, 0f, 1f, Color.WHITE)
+
+        val gText = String.format(
+            "%s",
+            Util.getDateTimeFormatString(Date(File(image.absolutePath).lastModified()))
+        )
+
+        val bounds = Rect()
+        var noOfLines = 0
+        for (line in gText.split("\n").toTypedArray()) {
+            noOfLines++
+        }
+
+        paint.getTextBounds(gText, 0, gText.length, bounds)
+        val x = 20f
+        var y: Float = (mBitmap.height - bounds.height() * noOfLines+2).toFloat()
+
+        // Fondo
+        val mPaint = Paint()
+        mPaint.color = ContextCompat.getColor(context, R.color.transparentBlack)
+
+        // Tamaño del Fondo
+        val top = mBitmap.height - bounds.height() * (noOfLines + 1.5)
+        canvasPaint.drawRect(
+            0f,
+            top.toFloat(),
+            mBitmap.width.toFloat(),
+            mBitmap.height.toFloat(),
+            mPaint
+        )
+
+        // Agregando texto
+        for (line in gText.split("\n").toTypedArray()) {
+            canvasPaint.drawText(line, x, y, paint)
+            y += paint.descent() - paint.ascent()
+        }
+
         try {
             val out = FileOutputStream(image)
-            mBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
+            mBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out)
             out.flush()
             out.close()
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        Util.comprimirImagen(direccion)
+
         return nameImg
     }
 

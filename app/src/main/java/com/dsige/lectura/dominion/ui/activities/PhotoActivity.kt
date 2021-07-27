@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.provider.MediaStore
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.Menu
@@ -26,7 +25,6 @@ import com.dsige.lectura.dominion.data.local.model.Photo
 import com.dsige.lectura.dominion.data.viewModel.SuministroViewModel
 import com.dsige.lectura.dominion.data.viewModel.ViewModelFactory
 import com.dsige.lectura.dominion.helper.Gps
-import com.dsige.lectura.dominion.helper.Permission
 import com.dsige.lectura.dominion.helper.Util
 import com.dsige.lectura.dominion.ui.adapters.PhotoAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -367,7 +365,6 @@ class PhotoActivity : DaggerAppCompatActivity(), View.OnClickListener {
                             e.printStackTrace()
                         }
                     }
-//                    startActivityForResult(takePictureIntent, Permission.CAMERA_REQUEST)
                     resultLauncher.launch(takePictureIntent)
                 }
             }
@@ -377,36 +374,19 @@ class PhotoActivity : DaggerAppCompatActivity(), View.OnClickListener {
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                suministroViewModel.generarArchivo(
-                    nameImg,
-                    this@PhotoActivity,
-                    fechaAsignacion,
-                    direction,
-                    latitud,
-                    longitud,
-                    receive,
-                    tipo
+                suministroViewModel.generatePhoto(
+                  nameImg =  nameImg,
+                  context =  this@PhotoActivity,
+                  fechaAsignacion =  fechaAsignacion,
+                  direccion =  direction,
+                  latitud =  latitud,
+                  longitud =  longitud,
+                  receive =  receive,
+                  tipo =  tipo
                 )
             }
             buttonPhoto.visibility = View.VISIBLE
         }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == Permission.CAMERA_REQUEST && resultCode == RESULT_OK) {
-//            suministroViewModel.generarArchivo(
-//                nameImg,
-//                this@PhotoActivity,
-//                fechaAsignacion,
-//                direction,
-//                latitud,
-//                longitud,
-//                receive,
-//                tipo
-//            )
-//        }
-//        buttonPhoto.visibility = View.VISIBLE
-//    }
 
     private fun updateData(receive: Int, tipo: Int, guardar: Boolean) {
         when {

@@ -31,10 +31,12 @@ class PreviewCameraActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun bindUI(nameImg: String) {
         imgClose.setOnClickListener(this)
+        textTile.text = nameImg
         Looper.myLooper()?.let {
             Handler(it).postDelayed({
                 val f = File(Util.getFolder(this), nameImg)
                 Picasso.get().load(f)
+                    .fit()
                     .into(imageView, object : Callback {
                         override fun onSuccess() {
                             progressBar.visibility = View.GONE
@@ -42,7 +44,7 @@ class PreviewCameraActivity : AppCompatActivity(), View.OnClickListener {
 
                         override fun onError(e: Exception?) {}
                     })
-            }, 200)
+            }, 800)
         }
     }
 }

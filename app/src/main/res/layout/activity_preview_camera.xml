@@ -7,6 +7,16 @@
     android:background="@color/colorBlack"
     tools:context=".ui.activities.PreviewCameraActivity">
 
+    <View
+        android:id="@+id/viewtoolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:background="@color/transparentBlack"
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/imgClose"
         android:layout_width="wrap_content"
@@ -14,7 +24,26 @@
         android:layout_margin="15dp"
         android:contentDescription="@string/img"
         android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewtoolbar"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back" />
+
+    <TextView
+        android:id="@+id/textTile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:contentDescription="@string/img"
+        android:elevation="8dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textColor="@color/colorWhite"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/viewtoolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgClose"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_arrow_back" />
 

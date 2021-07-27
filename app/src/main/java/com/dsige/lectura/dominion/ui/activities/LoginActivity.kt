@@ -26,6 +26,8 @@ class LoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         var cantidad = 0
 
         when (requestCode) {
@@ -53,7 +55,7 @@ class LoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 if (usuario.isNotEmpty()) {
                     if (pass.isNotEmpty()) {
                         load()
-                        if (Build.VERSION.SDK_INT == 29) {
+                        if (Build.VERSION.SDK_INT >= 29) {
                             usuarioViewModel.getLogin(
                                 usuario, pass, pass, Util.getVersion(this), Util.getVersion(this)
                             )
@@ -80,7 +82,7 @@ class LoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var usuarioViewModel: UsuarioViewModel
     lateinit var builder: AlertDialog.Builder
-    var dialog: AlertDialog? = null
+    private var dialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

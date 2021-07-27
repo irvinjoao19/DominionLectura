@@ -1,8 +1,5 @@
 package com.dsige.lectura.dominion.data.viewModel
 
-import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +8,6 @@ import com.dsige.lectura.dominion.data.local.model.Sync
 import com.dsige.lectura.dominion.data.local.model.Usuario
 import com.dsige.lectura.dominion.data.local.repository.ApiError
 import com.dsige.lectura.dominion.data.local.repository.AppRepository
-import com.dsige.lectura.dominion.helper.Util
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
@@ -130,7 +126,7 @@ internal constructor(private val roomRepository: AppRepository, private val retr
                                                     mensajeError.postValue(error!!.Message)
                                                 } catch (e1: IOException) {
                                                     e1.printStackTrace()
-                                                    Log.i("TAG", e1.toString())
+//                                                    Log.i("TAG", e1.toString())
                                                 }
                                             } else {
                                                 mensajeError.postValue(e.toString())

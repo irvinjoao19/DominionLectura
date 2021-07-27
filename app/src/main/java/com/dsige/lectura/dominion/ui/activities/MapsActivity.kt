@@ -25,21 +25,19 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import org.jetbrains.annotations.NotNull
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener, TaskLoadedCallback {
 
     lateinit var camera: CameraPosition
-    lateinit var mMap: GoogleMap
+    private lateinit var mMap: GoogleMap
     private var mapView: View? = null
-    lateinit var place1: MarkerOptions
-    lateinit var place2: MarkerOptions
-    var currentPolyline: Polyline? = null
+    private lateinit var place1: MarkerOptions
+    private lateinit var place2: MarkerOptions
     lateinit var locationManager: LocationManager
 
     private var isFirstTime: Boolean = true
-    private var MIN_DISTANCE_CHANGE_FOR_UPDATES: Int = 10
-    private var MIN_TIME_BW_UPDATES: Int = 5000
+    private var minDistanceChangeForUpdates: Int = 10
+    private var minTimeBwUpdates: Int = 5000
 
     private var latitud: String = ""
     private var longitud: String = ""
@@ -101,14 +99,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener, 
 
             locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER,
-                MIN_TIME_BW_UPDATES.toLong(),
-                MIN_DISTANCE_CHANGE_FOR_UPDATES.toFloat(),
+                minTimeBwUpdates.toLong(),
+                minDistanceChangeForUpdates.toFloat(),
                 this
             )
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
-                MIN_TIME_BW_UPDATES.toLong(),
-                MIN_DISTANCE_CHANGE_FOR_UPDATES.toFloat(),
+                minTimeBwUpdates.toLong(),
+                minDistanceChangeForUpdates.toFloat(),
                 this
             )
         } else {
@@ -146,8 +144,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener, 
     }
 
     override fun onTaskDone(vararg values: Any) {
-        currentPolyline?.remove()
-        currentPolyline = mMap.addPolyline(values[0] as PolylineOptions)
+        val polyline = mMap.addPolyline(values[0] as PolylineOptions)
+        polyline.isClickable = true
     }
 
     private fun getUrl(origin: LatLng, dest: LatLng): String {

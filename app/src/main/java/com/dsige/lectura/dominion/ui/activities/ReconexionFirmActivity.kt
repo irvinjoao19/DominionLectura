@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -123,7 +125,7 @@ class ReconexionFirmActivity : DaggerAppCompatActivity(), View.OnClickListener {
         val layoutManager = LinearLayoutManager(this)
         val firmAdapter = FirmAdapter(object : OnItemClickListener.PhotoListener {
             override fun onItemClick(f: Photo, view: View, position: Int) {
-                deletePhoto(f)
+                showPopupMenu(f,view)
             }
         })
         recyclerView.itemAnimator = DefaultItemAnimator()
@@ -142,7 +144,7 @@ class ReconexionFirmActivity : DaggerAppCompatActivity(), View.OnClickListener {
         }
         suministroViewModel.mensajeSuccess.observe(this) {
             closeLoad()
-            siguienteOrden(tipo, estado)
+            siguienteOrden(estado)
             Util.toastMensaje(this, it)
         }
 
@@ -223,7 +225,7 @@ class ReconexionFirmActivity : DaggerAppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun siguienteOrden(tipo: Int, estado: Int) {
+    private fun siguienteOrden(estado: Int) {
         val nombre = when (estado) {
             1 -> "Lectura Normales"
             2 -> "Relectura"
@@ -277,5 +279,24 @@ class ReconexionFirmActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 dialog.cancel()
             }
         dialog.show()
+    }
+
+    private fun showPopupMenu(p: Photo, v: View) {
+        val popupMenu = PopupMenu(this, v)
+        popupMenu.menu.add(0, Menu.FIRST, 0, getText(R.string.ver))
+        popupMenu.menu.add(1, Menu.FIRST + 1, 1, getText(R.string.deleteFirm))
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                1 -> {
+                    val intent = Intent(this@ReconexionFirmActivity, PreviewCameraActivity::class.java)
+                    intent.putExtra("nameImg", p.rutaFoto)
+                    startActivity(intent)
+                }
+                2 -> deletePhoto(p)
+
+            }
+            false
+        }
+        popupMenu.show()
     }
 }

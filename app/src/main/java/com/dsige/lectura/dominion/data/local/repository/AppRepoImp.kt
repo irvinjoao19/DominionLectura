@@ -1,7 +1,6 @@
 package com.dsige.lectura.dominion.data.local.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.dsige.lectura.dominion.data.local.AppDataBase
 import com.dsige.lectura.dominion.data.local.model.*
@@ -649,12 +648,6 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         return Observable.create {
             val list = ArrayList<Photo>()
             val files = dataBase.photoDao().getPhotosTask()
-            if (files.isEmpty()) {
-                it.onError(Throwable("No hay fotos disponibles por enviar"))
-                it.onComplete()
-                return@create
-            }
-
             files.forEach { p ->
                 val file = File(Util.getFolder(context), p.rutaFoto)
                 if (file.exists()) {

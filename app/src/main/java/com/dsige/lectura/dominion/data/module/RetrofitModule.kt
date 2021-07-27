@@ -2,6 +2,7 @@ package com.dsige.lectura.dominion.data.module
 
 import com.dsige.lectura.dominion.data.local.AppDataBase
 import com.dsige.lectura.dominion.data.local.repository.*
+import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -37,7 +38,7 @@ class RetrofitModule {
 
     @Provides
     internal fun providesGsonConverterFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create()
+        return GsonConverterFactory.create(GsonBuilder().setLenient().create())
     }
 
     @Provides
@@ -62,6 +63,6 @@ class RetrofitModule {
 
     companion object {
 //        private val BASE_URL = "http://192.168.0.147/webApiDominion/api/Migration/"
-        private val BASE_URL = "http://dominion-peru.com/webApiDominionLecturas/api/Migration/"
+        private const val BASE_URL = "http://dominion-peru.com/webApiDominionLecturas/api/Migration/"
     }
 }

@@ -133,6 +133,7 @@
     <string name="envio_de_pendientes">Envio de Pendientes</string>
     <string name="ver">Ver</string>
     <string name="deletePhoto">Eliminar Foto</string>
+    <string name="deleteFirm">Eliminar Firma</string>
     <string name="ubicacion_del_medidor">Ubicación del Medidor</string>
     <string name="telefono">telefono</string>
     <string name="nota">nota</string>

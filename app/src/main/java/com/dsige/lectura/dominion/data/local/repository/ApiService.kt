@@ -9,7 +9,10 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    @Headers("Cache-Control: no-cache")
+    @Headers(
+        "Cache-Control: no-cache",
+        "Content-Type: application/json"
+    )
     @GET("GetLogin")
     fun getLogin(
         @Query("user") user: String,
@@ -19,7 +22,10 @@ interface ApiService {
         @Query("token") token: String
     ): Observable<Usuario>
 
-    @Headers("Cache-Control: no-cache")
+    @Headers(
+        "Cache-Control: no-cache",
+        "Content-Type: application/json"
+    )
     @GET("MigracionAll")
     fun getSync(
         @Query("operarioId") operarioId: Int,
@@ -37,7 +43,6 @@ interface ApiService {
     fun saveOperarioGps(@Body gps: RequestBody): Observable<Mensaje>
 
     @Headers("Cache-Control: no-cache")
-//    @POST("SavePhotos")
     @POST("SaveFile")
     fun sendPhotos(@Body body: RequestBody): Observable<String>
 
@@ -45,11 +50,16 @@ interface ApiService {
     @POST("SaveCliente")
     fun sendClientes(@Body body: RequestBody): Observable<Mensaje>
 
-    @Headers("Cache-Control: no-cache")
+    @Headers("Cache-Control: no-cache",
+        "Content-Type: application/json")
     @GET("VerificateFileClienteNew")
-    fun getVerificateFile(@Query("id") file: Int, @Query("fecha") fecha: String): Observable<Mensaje>
+    fun getVerificateFile(
+        @Query("id") file: Int,
+        @Query("fecha") fecha: String
+    ): Observable<Mensaje>
 
-    @Headers("Cache-Control: no-cache")
+    @Headers("Cache-Control: no-cache",
+        "Content-Type: application/json")
     @GET("VerificarCorte")
     fun getVerificateCorte(@Query("suministro") s: String): Observable<Mensaje>
 

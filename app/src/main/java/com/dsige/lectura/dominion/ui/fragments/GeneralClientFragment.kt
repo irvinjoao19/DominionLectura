@@ -37,6 +37,8 @@ import com.dsige.lectura.dominion.ui.adapters.MenuItemAdapter
 import com.dsige.lectura.dominion.ui.listeners.OnItemClickListener
 import com.google.android.material.button.MaterialButton
 import dagger.android.support.DaggerFragment
+import io.reactivex.Completable
+import io.reactivex.CompletableObserver
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -117,7 +119,7 @@ class GeneralClientFragment : DaggerFragment(), View.OnClickListener, TextWatche
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    lateinit var clienteViewModel: ClienteViewModel
+    private lateinit var clienteViewModel: ClienteViewModel
     private var viewPager: ViewPager? = null
     private var clienteId: Int = 0
 
@@ -125,7 +127,7 @@ class GeneralClientFragment : DaggerFragment(), View.OnClickListener, TextWatche
     private var dialog: AlertDialog? = null
 
     lateinit var folder: File
-    lateinit var image: File
+    private lateinit var image: File
     private var nameImg: String = ""
     private var direction: String = ""
 
@@ -303,6 +305,8 @@ class GeneralClientFragment : DaggerFragment(), View.OnClickListener, TextWatche
                     e.printStackTrace()
                 }
             }
+
+//            resultPhotoLauncher.launch(takePictureIntent)
             startActivityForResult(takePictureIntent, tipo)
         }
     }
@@ -311,6 +315,7 @@ class GeneralClientFragment : DaggerFragment(), View.OnClickListener, TextWatche
         val i = Intent(Intent.ACTION_GET_CONTENT)
         i.type = "image/*"
         i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+//        resultGalleryLauncher.launch(i)
         startActivityForResult(i, orden)
     }
 
@@ -345,20 +350,17 @@ class GeneralClientFragment : DaggerFragment(), View.OnClickListener, TextWatche
     }
 
     private fun generateImage(code: Int) {
-        val image: Observable<Boolean> = Util.generateImageAsync(direction)
-        image.subscribeOn(Schedulers.io())
+        Util.generateImageAsync(requireContext(), direction)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<Boolean> {
-                override fun onComplete() {}
+            .subscribe(object : CompletableObserver {
                 override fun onSubscribe(d: Disposable) {}
-                override fun onNext(t: Boolean) {
-                    if (t) {
-                        updatePhotoGalery(code, nameImg)
-                    }
+                override fun onComplete() {
+                    updatePhotoGalery(code, nameImg)
                 }
 
                 override fun onError(e: Throwable) {
-                    Util.toastMensaje(requireContext(), "Volver a intentarlo")
+                    Util.toastMensaje(requireContext(), e.message.toString())
                 }
             })
     }
@@ -694,4 +696,23 @@ class GeneralClientFragment : DaggerFragment(), View.OnClickListener, TextWatche
             dialog.dismiss()
         }
     }
+
+
+//    incorporando nuevos metodos para galeria y foto
+//
+//    private val resultPhotoLauncher =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == DaggerAppCompatActivity.RESULT_OK) {
+//
+//            }
+//        }
+//
+//
+//    private val resultGalleryLauncher =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == DaggerAppCompatActivity.RESULT_OK) {
+//
+//            }
+//        }
+
 }

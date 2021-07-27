@@ -10,7 +10,6 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
-    <color name="black_semi_transparent">#B2000000</color>
     <color name="background">#e5e5e5</color>
     <color name="half_black">#808080</color>
     <color name="white">#fafafa</color>
@@ -20,7 +19,6 @@
     <color name="blue_semi_transparent">#805677fc</color>
     <color name="blue_semi_transparent_pressed">#80738ffe</color>
     <color name="transparentBlack">#64000000</color>
-    <color name="transparesdsntBlack">#e0e0e0</color>
 
     <color name="colorBlack">#000</color>
     <color name="colorWhite">#fff</color>
